@@ -1,94 +1,117 @@
-import { useState, useEffect } from 'react'
-import { ethers } from "ethers"
-import { Row, Col, Card } from 'react-bootstrap'
+import { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import { Row, Col, Card } from "react-bootstrap";
+import "../App.css/";
 
-function renderSoldItems(items) {
+//This is a function that renders a list of sold tickets based on the information passed to it.
+//The tickets parameter here is meant to be the tickets mapping in the smart contract i.e the id for the ticket struct (object)
+function renderSoldTickets(tickets) {
   return (
     <>
       <h2>Sold</h2>
-      <Row xs={1} md={2} lg={4} className="g-4 py-3">
-        {items.map((item, idx) => (
-          <Col key={idx} className="overflow-hidden">
-            <Card>
-              <Card.Img variant="top" src={item.image} />
-              <Card.Footer>
-                For {ethers.utils.formatEther(item.totalPrice)} ETH - Recieved {ethers.utils.formatEther(item.price)} ETH
-              </Card.Footer>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+      <div className="swiper-wrapper">
+        <div className="swiper-slide h-auto">
+          <div className="cards">
+            <Row xs={1} md={2} lg={4} className="g-4 py-3">
+              {/*This is a map function that tries to load the sold tickets details based on the tickets mapping i.e the id passed in */}
+              {tickets.map((Ticket, idx) => (
+                <Col key={idx} className="overflow-hidden">
+                  <Card className="card">
+                    <Card.Img variant="top" src={occasion.image} />
+                    <h5 className="card-title mb-3">{occasion.name}</h5>
+                    <Card.Footer>
+                      For {ethers.utils.formatEther(Ticket.totalPrice)} ETH -
+                      Recieved {ethers.utils.formatEther(Ticket.price)} ETH
+                    </Card.Footer>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
-export default function MyListedItems({ marketplace, nft, account }) {
-  const [loading, setLoading] = useState(true)
-  const [listedItems, setListedItems] = useState([])
-  const [soldItems, setSoldItems] = useState([])
-  const loadListedItems = async () => {
-    // Load all sold items that the user listed
-    const itemCount = await marketplace.itemCount()
-    let listedItems = []
-    let soldItems = []
-    for (let indx = 1; indx <= itemCount; indx++) {
-      const i = await marketplace.items(indx)
+export default function MyListedTickets({ artick, account }) {
+  const [loading, setLoading] = useState(true);
+  const [listedTickets, setListedTickets] = useState([]);
+  const [soldTickets, setSoldTickets] = useState([]);
+  const loadListedTickets = async () => {
+    // Load all sold ticket that the user listed
+    const TicketId = await artick.TicketId();
+    let listedTickets = [];
+    let soldTickets = [];
+    {
+      /*This for function pulls in listed tickets not yet sold */
+    }
+    for (let indx = 1; indx <= TicketId; indx++) {
+      const i = await artick.tickets(indx);
       if (i.seller.toLowerCase() === account) {
         // get uri url from nft contract
-        const uri = await nft.tokenURI(i.tokenId)
-        // use uri to fetch the nft metadata stored on ipfs 
-        const response = await fetch(uri)
-        const metadata = await response.json()
-        // get total price of item (item price + fee)
-        const totalPrice = await marketplace.getTotalPrice(i.itemId)
-        // define listed item object
-        let item = {
+        const uri = await artick.tokenURI(i.tokenId);
+        // use uri to fetch the nft metadata stored on ipfs
+        const response = await fetch(uri);
+        const metadata = await response.json();
+        // get total price of ticket (ticket price + fee)
+        const totalPrice = await artick.getTotalPrice(i.TicketId);
+        // define listed ticket object
+        let Ticket = {
           totalPrice,
           price: i.price,
-          itemId: i.itemId,
+          TicketId: i.TicketId,
           name: metadata.name,
           description: metadata.description,
-          image: metadata.image
-        }
-        listedItems.push(item)
-        // Add listed item to sold items array if sold
-        if (i.sold) soldItems.push(item)
+          image: metadata.image,
+        };
+        listedTickets.push(Ticket);
+        // Add listed ticket to sold ticket array if sold
+        if (i.sold) soldTickets.push(Ticket);
       }
     }
-    setLoading(false)
-    setListedItems(listedItems)
-    setSoldItems(soldItems)
-  }
+    setLoading(false);
+    setListedTickets(listedTickets);
+    setSoldTickets(soldTickets);
+  };
   useEffect(() => {
-    loadListedItems()
-  }, [])
-  if (loading) return (
-    <main style={{ padding: "1rem 0" }}>
-      <h2>Loading...</h2>
-    </main>
-  )
+    loadListedTickets();
+  }, []);
+  if (loading)
+    return (
+      <main style={{ padding: "1rem 0" }}>
+        <h2>Loading...</h2>
+      </main>
+    );
   return (
-    <div className="flex justify-center">
-      {listedItems.length > 0 ?
-        <div className="px-5 py-3 container">
-            <h2>Listed</h2>
-          <Row xs={1} md={2} lg={4} className="g-4 py-3">
-            {listedItems.map((item, idx) => (
-              <Col key={idx} className="overflow-hidden">
-                <Card>
-                  <Card.Img variant="top" src={item.image} />
-                  <Card.Footer>{ethers.utils.formatEther(item.totalPrice)} ETH</Card.Footer>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-            {soldItems.length > 0 && renderSoldItems(soldItems)}
+    <div className="swiper-wrapper">
+      <div className="swiper-slide h-auto">
+        <div className="cards">
+          {listedTickets.length > 0 ? (
+            <div className="px-5 py-3 container">
+              <h2>Listed</h2>
+              <Row xs={1} md={2} lg={4} className="g-4 py-3">
+                {listedTickets.map((Ticket, idx) => (
+                  <Col key={idx} className="overflow-hidden">
+                    <Card className="card">
+                      <Card.Img variant="top" src={occasion.image} />
+                      <h5 className="card-title mb-3">{occasion.name}</h5>
+                      <Card.Footer>
+                        {ethers.utils.formatEther(Ticket.totalPrice)} ETH
+                      </Card.Footer>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+              {soldTickets.length > 0 && renderSoldTickets(soldTickets)}
+            </div>
+          ) : (
+            <main style={{ padding: "1rem 0" }}>
+              <h2>No listed tickets</h2>
+            </main>
+          )}
         </div>
-        : (
-          <main style={{ padding: "1rem 0" }}>
-            <h2>No listed assets</h2>
-          </main>
-        )}
+      </div>
     </div>
   );
 }

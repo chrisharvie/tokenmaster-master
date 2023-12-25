@@ -1,41 +1,41 @@
 import { useEffect, useState } from "react";
 
 // Import Components
-import Ticket from "./Ticket";
+import EventTicket from "./EventTicket";
 
-const SeatChart = ({ occasion, artick, provider, setToggle }) => {
+const SeatChart = ({ occasion, artick, setToggle }) => {
   const [TicketsTaken, setTicketsTaken] = useState(false);
   const [hasSold, setHasSold] = useState(false);
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [occasionItems, setOccasionItems] = useState([]);
 
-  const getSeatsTaken = async () => {
-    const TicketsTaken = await artick.getSeatsTaken(occasion.id);
+  const getTicketsTaken = async () => {
+    const TicketsTaken = await artick.getTicketsTaken(occasion.id);
     setTicketsTaken(TicketsTaken);
   };
 
-  const buyMarketItem = async (item) => {
+  const buyTicket = async (Ticket) => {
     //it calls the purchase item function on the marketplace, passing in the arguments as needed
     await (
-      await artick.purchaseItem(Ticket.TicketId, { value: Ticket.totalPrice })
+      await artick.purchaseTicket(Ticket.TicketId, { value: Ticket.totalPrice })
     ).wait();
   };
 
   useEffect(() => {
-    getSeatsTaken();
+    getTicketsTaken();
   }, [hasSold]);
 
   const incrementTicketCounter = () => {
     setTicketQuantity(ticketQuantity + 1);
   };
 
-  const getItemsForOccasion = async (occasionId) => {
+  const getTicketsForOccasion = async (occasionId) => {
     try {
       // Call the smart contract function to get items for a specific occasion
-      const items = await artick.getItemsForOccasion(occasionId);
+      const items = await artick.getTicketsForOccasion(occasionId);
 
       // Assuming the smart contract returns an array of items
-      return items;
+      return EventTicket;
     } catch (error) {
       console.error("Error fetching items for occasion:", error);
       return [];
@@ -45,7 +45,7 @@ const SeatChart = ({ occasion, artick, provider, setToggle }) => {
   const getOccasionItems = async (occasionId) => {
     try {
       // Call getItemsForOccasion to fetch items
-      const occasionItems = await getItemsForOccasion(occasionId);
+      const occasionItems = await getTicketsForOccasion(occasionId);
 
       // Update the state variable
       setOccasionItems(occasionItems);
@@ -82,8 +82,8 @@ const SeatChart = ({ occasion, artick, provider, setToggle }) => {
             </div>
             <div className="modal-body">
               {occasion.description}
-              {occasionItems.map((item) => (
-                <div key={item.itemId}></div>
+              {occasionItems.map((Ticket) => (
+                <div key={Ticket.TicketId}></div>
               ))}
             </div>
 
@@ -104,7 +104,7 @@ const SeatChart = ({ occasion, artick, provider, setToggle }) => {
             <button
               type="button"
               className="btn btn-primary mb-3"
-              onClick={buyMarketItem}
+              onClick={buyTicket}
             >
               Buy now
             </button>

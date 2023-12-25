@@ -53,6 +53,8 @@ struct Ticket {
         address indexed buyer //represents the address of the buyer who bought the ticket for sale
     );
 
+   
+
 
 //<-!!!! ---Occasions--- !!! ->    
 
@@ -212,4 +214,27 @@ tickets[totalSupply].occasionId = _occasionId; // Update occasionId for the mint
         // Return the array of tickets for the specified occasion
         return occasionTickets;
     }
+
+// Function to sell a ticket
+   function sellTicket(uint256 tokenId, uint256 newPrice, Ticket memory ticket) external {
+    // Check if the sender owns the ticket
+    require(msg.sender == ticket.seller, "You do not own this ticket");
+    // Check if the ticket is not already sold
+    require(!ticket.sold, "Ticket has already been sold");
+
+    // Update the ticket's price
+    tickets[tokenId].price = newPrice;
+
+    // Emit the Bought event
+    emit Bought(
+        tokenId,
+        address(ticket.nft),
+        ticket.tokenId,
+        ticket.price,
+        ticket.seller,
+        msg.sender
+    );
+    }
 }
+
+
