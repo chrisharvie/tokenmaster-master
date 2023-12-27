@@ -32,7 +32,7 @@ async function main() {
         "https://indigo-tropical-bird-111.mypinata.cloud/ipfs/QmTgxcb2V97CjyyoY3E69dBB2h6ekZJKNcGUS3nAT9RJT9/2.png",
     },
     {
-      name: "ETH Tokyo",
+      name: "ETH Manchester",
       cost: tokens(1 + feePercent),
       maxtickets: 130,
       date: "Jun 2",
@@ -82,7 +82,7 @@ async function main() {
   for (var i = 0; i < 5; i++) {
     const transaction = await artick
       .connect(deployer)
-      .list(
+      .listOccasion(
         occasions[i].name,
         occasions[i].cost,
         occasions[i].maxtickets,

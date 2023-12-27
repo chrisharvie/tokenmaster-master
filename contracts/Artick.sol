@@ -9,16 +9,17 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "hardhat/console.sol";
 
 contract Artick is ERC721 {
-address public owner; //person who deploys the contract
-uint TicketId;//Id for the ticket
-uint public totalOccasions; // total number of occasions
-uint public totalSupply; //total supply of nft's/tickets that exist.  It's a cumulative count of all the tickets created across all occasions
-address payable public immutable feeAccount; // the account that receives fees
-uint public immutable feePercent; //platform fee charged with every sale
+
+//---state variables ---//
+//These are the like variables in other coding languages, updating these costs gas, some of them will be updated using fucntions below or on deployment of the contract, some are immutable and won't change    
+address public owner; //Person/wallet who deploys the contract, set when deploying the contract
+uint TicketId;//Id for the ticket, used in the ticket struct, see below.
+uint public totalOccasions; //Total number of occasions, we can keep track of this for referencing purposes.
+uint public totalSupply; //Total supply of nft's/tickets that exist.  It's a cumulative count of all the tickets created across all occasions
+address payable public immutable feeAccount; //The account that receives fees
+uint public immutable feePercent; //Platform fee charged with every sale of a ticket
 
 //<-!!!! ---Tickets--- !!! ->
-
-
 //A struct (solidity object) for an nft/ticket thay has specific data points. 
 struct Ticket {
         uint TicketId; // an identifier within the app e.g ticket 1,2,3. set when listing a new ticket, and it is incremented to provide a unique identifier for each ticket. This is internal marketplace logic.
@@ -95,21 +96,17 @@ owner=msg.sender;
  feePercent = _feePercent;
    }
 
-function list (uint _occasionId, string memory _name, uint _cost, uint _tickets, uint _maxTickets, string memory _date, string memory _time, string memory _location, string memory _description, string memory _image) public onlyOwner {
+// -------  Creating occasions ---- //
+
+//This is a function for creating occasions. The arguments/values passed into the parameters should come from the deploy script where this function is called.
+function listOccasion (uint _occasionId, string memory _name, uint _cost, uint _tickets, uint _maxTickets, string memory _date, string memory _time, string memory _location, string memory _description, string memory _image) public onlyOwner {
    //the totalOccasion identifier is incremented to esnure each occasion created has a unique identifier
    totalOccasions++;
 
 //This creates a new occasion struct and stores it in the occasions mapping. The key used for the mapping is the totalOccasions identifier
-//The values to be assigned to the new occasion struct/object are provided as arguments above in this function
    occasions[totalOccasions] = Occasion(totalOccasions, _name, _cost, _tickets, _maxTickets, _date,_time, _location, _description, _image);
-
-//This part of the code is responsible for creating and listing a new ticket associated with the occasion
-//The TicketId is incremented to ensure that each ticket gets a unique identifier.
-    TicketId++;
-//This line creates a new instance of the Ticket struct and stores it in the tickets mapping, totaloccasiosn is used as the occasionID
-    tickets[TicketId] = Ticket(TicketId, IERC721(address(this)), tokenId, false);
-    emit OfferedTicket(TicketId, address(this), tickets[TicketId].tokenId, totalOccasions, _cost, payable(owner));
 }
+
 
 //This is a function for retrieving details about an occasion. The _id parameter represents the unique identifier of the occasion 
 function getOccasion (uint _id) public view returns (Occasion memory){
@@ -225,6 +222,10 @@ tickets[totalSupply].occasionId = _occasionId; // Update occasionId for the mint
     // Update the ticket's price
     tickets[tokenId].price = newPrice;
 
+    //transfer the nft to a new account wallet. calling the transferfrom function inherrited from the ozep contract
+//the arguments in the transferfrom function are required, address from, address to (recieves the nft), tokenid which is passed in ass an argument above
+_artick.transferFrom(msg.sender, address(this), _tokenId);
+
     // Emit the Bought event
     emit Bought(
         tokenId,
@@ -235,6 +236,25 @@ tickets[totalSupply].occasionId = _occasionId; // Update occasionId for the mint
         msg.sender
     );
     }
+
+
+// ----- Create tickets ----//
+//this function will make a create a ticket
+//all the parameters relate to the Ticket struct above. The values for this should be passed in via the create component and the mintthenlist function
+function makeTicket(IERC721 _artick, uint _TicketId, uint _price, uint _tokenId, uint _occasionId, address _seller, bool _sold) external nonReentrant onlyOwner {
+ //require price to be higher than 0, if true it runs the code, if not it emits this message
+require(_price > 0, "Price must be greater than zero");
+
+//This part of the code is responsible for creating and listing a new ticket associated with the occasion
+//The TicketId is incremented to ensure that each ticket gets a unique identifier.
+TicketId++;
+//This line creates a new instance of the Ticket struct and stores it in the tickets mapping, totaloccasiosn is used as the occasionID
+tickets[TicketId] = Ticket(_TicketId, IERC721(address(this)), _tokenId, false, _price, _occasionId);
+emit OfferedTicket(_TicketId, address(this), tickets[TicketId].tokenId, _price, payable(owner));
 }
+
+}
+    
+
 
 
