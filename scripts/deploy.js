@@ -7,13 +7,10 @@ const tokens = (n) => {
 async function main() {
   // Setup accounts & variables
   const [deployer] = await ethers.getSigners();
-  const NAME = "Artick";
-  const SYMBOL = "AT";
-  const feePercent = 1;
 
   // Deploy contract
   const Artick = await ethers.getContractFactory("Artick");
-  const artick = await Artick.deploy(NAME, SYMBOL, feePercent);
+  const artick = await Artick.deploy(1);
   await artick.deployed();
 
   console.log(`Deployed Artick Contract at: ${artick.address}\n`);

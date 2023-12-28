@@ -22,6 +22,15 @@ function SaleConfirmation() {
             onClick={() => setToggle(false)}
           ></button>
         </div>
+        <h3 className="card-text  fs-lg">Set the price you wish to sell at</h3>
+        <Form.Control
+          onChange={(e) => setPrice(e.target.value)}
+          size="lg"
+          required
+          type="number"
+          placeholder="Price in ETH"
+        />
+
         <h3 className="card-text  fs-lg">
           Please confirm you wish to sell your ticket
         </h3>
