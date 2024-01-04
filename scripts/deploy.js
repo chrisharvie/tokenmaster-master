@@ -4,6 +4,8 @@ const tokens = (n) => {
   return ethers.utils.parseUnits(n.toString(), "ether");
 };
 
+const feePercent = 0.1;
+
 async function main() {
   // Setup accounts & variables
   const [deployer] = await ethers.getSigners();
@@ -18,8 +20,10 @@ async function main() {
   // List 6 events
   const occasions = [
     {
-      name: "Artick's first event",
+      id: 1,
+      name: "Articks first event",
       cost: tokens(1 + feePercent),
+      tickets: 100,
       maxtickets: 100,
       date: "Sep 11",
       time: "10:00AM EST",
@@ -29,8 +33,10 @@ async function main() {
         "https://indigo-tropical-bird-111.mypinata.cloud/ipfs/QmTgxcb2V97CjyyoY3E69dBB2h6ekZJKNcGUS3nAT9RJT9/2.png",
     },
     {
+      id: 2,
       name: "ETH Manchester",
       cost: tokens(1 + feePercent),
+      tickets: 130,
       maxtickets: 130,
       date: "Jun 2",
       time: "1:00PM JST",
@@ -40,8 +46,10 @@ async function main() {
         "https://gateway.pinata.cloud/ipfs/QmVySXL5jcqpvCvmuGSbkKpuss5L87iT1Kezuiu2GbpoBf",
     },
     {
-      name: "ETH Privacy Hackathon",
+      id: 3,
+      name: "Man city champions league final",
       cost: tokens(0.25 + feePercent),
+      tickets: 200,
       maxtickets: 200,
       date: "Jun 9",
       time: "10:00AM TRT",
@@ -51,8 +59,10 @@ async function main() {
         "https://gateway.pinata.cloud/ipfs/QmVySXL5jcqpvCvmuGSbkKpuss5L87iT1Kezuiu2GbpoBf",
     },
     {
+      id: 4,
       name: "Dallas Mavericks vs. San Antonio Spurs",
       cost: tokens(5 + feePercent),
+      tickets: 0,
       maxtickets: 0,
       date: "Jun 11",
       time: "2:30PM CST",
@@ -62,8 +72,10 @@ async function main() {
         "https://gateway.pinata.cloud/ipfs/QmVySXL5jcqpvCvmuGSbkKpuss5L87iT1Kezuiu2GbpoBf",
     },
     {
+      id: 5,
       name: "ETH Global Toronto",
       cost: tokens(1.5 + feePercent),
+      tickets: 125,
       maxtickets: 125,
       date: "Jun 23",
       time: "11:00AM EST",
@@ -80,8 +92,10 @@ async function main() {
     const transaction = await artick
       .connect(deployer)
       .listOccasion(
+        occasions[i].id,
         occasions[i].name,
         occasions[i].cost,
+        occasions[i].tickets,
         occasions[i].maxtickets,
         occasions[i].date,
         occasions[i].time,

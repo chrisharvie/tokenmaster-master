@@ -66,7 +66,7 @@ struct Ticket {
 struct Occasion {
 uint id; //a unique identifier assigned to each occasion. It allows for the differentiation between different occasions 
 string name; //the name of the occasion e.g Artick's first event
-string cost; //cost to go to the event. This is the same as price but we use cost for display reasons
+uint cost; //cost to go to the event. This is the same as price but we use cost for display reasons
 uint tickets; // keeps track of the number of tickets available for the occasion. It should decrease as tickets are sold or reserved.
 uint maxTickets; //specifies the maximum number of tickets that can be sold or issued for the occasion. It sets an upper limit on the number of participants.
 string date; //stores the date of the occasion, providing information about when the occasion is scheduled to take place.
@@ -121,11 +121,11 @@ function getOccasion (uint _id) public view returns (Occasion memory){
 
 //Mintin g NFT's---//
 //This is a mint function to try and create tickets (nft's) for an occasion
-function mint (uint _occasionId, uint _ticket, uint _tokenId) public payable{
+function mint (uint _id, uint _ticket, uint _tokenId) public payable{
 //Require the id is not 0 or less than the total occassions. so event can't be 0 or less than what is epxected
 require(_id!=0);
 require(_id <= totalOccasions);
-require(_occasionId != 0 && _occasionId <= totalOccasions, "Invalid occasionId");
+require(_id != 0 && _id <= totalOccasions, "Invalid occasionId");
 
 //Ensure amount of crypto sent is correct '.cost' is the amount of crypto sent in and should be the cost of the occasion as set in the struct when deployed
 require(msg.value >= occasions[_id].cost);
@@ -141,7 +141,7 @@ TicketTaken[_id][_ticket] = msg.sender;
 //This line appends the newly assigned seat to the list of seats taken for the specified occasion. It provides an easy way to retrieve information about the occupied seats for a particular occasion.
 TicketsTaken[_id].push(_ticket);
 //This line updates the occasionid for the newly minted ticket. It associates the minted ERC721 token with a specific occasion. This association is crucial for tracking which occasion a ticket belongs to.
-tickets[totalSupply].id = _occasionId; 
+tickets[totalSupply].TicketId = _id; 
 
 
 //This line increments the totalSupply variable by 1. The totalSupply represents the total number of NFTs (non-fungible tokens) minted in the contract
@@ -171,26 +171,26 @@ tickets[totalSupply].id = _occasionId;
         //Assigning the total price to a local state variable. 'gettotalprice' is calculated below
         uint _totalPrice = getTotalPrice(_TicketId);
         //This line is establishing a reference to the ticket identified by the _TicketId within the tickets mapping. It's essentially creating an alias or reference to the specific ticket to work with in the rest of the function
-        Ticket storage Ticket = tickets[_TicketId];
+        Ticket storage ticket = tickets[_TicketId];
         //Some validation checks on the existence of the ticket and if it's sold
         require(_TicketId > 0 && _TicketId <= TicketId, "Ticket doesn't exist");
         require(msg.value >= _totalPrice, "not enough ether to cover ticket price and market fee");
-        require(!Ticket.sold, "ticket already sold");
+        require(!ticket.sold, "ticket already sold");
         //This line is to pay the seller the fee amount. the address of the seller parameter in the ticket struct has the trasnfer function called on it to transfer the price to it and it transfers the ticket's price       
-        Ticket.seller.transfer(Ticket.price);
+        ticket.seller.transfer(ticket.price);
         //This tansfer's the fee's to the fee account address. total price comes from the variable above
-        feeAccount.transfer(_totalPrice - Ticket.price);
+        feeAccount.transfer(_totalPrice - ticket.price);
         //Update ticket to sold so we know the ticket is sold
-        Ticket.sold = true;
+        ticket.sold = true;
         //Transfer nft from the smart contract of this app to the buyer, the parameters come from the ERC contract imported, then the id of the token
-        Ticket.nft.transferFrom(address(this), msg.sender, Ticket.tokenId);
+        ticket.nft.transferFrom(address(this), msg.sender, ticket.tokenId);
         //Emit a 'Bought' event. The parameters should be the same as outlined above
         emit Bought(
             TicketId,
-            address(Ticket.nft),
-            Ticket.tokenId,
-            Ticket.price,
-            Ticket.seller,
+            address(ticket.nft),
+            ticket.tokenId,
+            ticket.price,
+            ticket.seller,
             msg.sender
         );
     }
@@ -230,7 +230,7 @@ tickets[totalSupply].id = _occasionId;
 
 //---Selling tickets---//
 //(How can we set a maximum price...)
-   function sellTicket(uint256 _tokenId, uint256 _newPrice, Ticket memory ticket) external {
+   function sellTicket(uint256 _tokenId, uint256 _newPrice, Ticket memory ticket) public {
     // Check if the sender owns the ticket
     require(msg.sender == ticket.seller, "You do not own this ticket");
     // Check if the ticket is not already sold
@@ -241,11 +241,11 @@ tickets[totalSupply].id = _occasionId;
 
 //Transfer the nft to a new account wallet. calling the transferfrom function inherrited from the ozep contract
 //The arguments in the transferfrom function are required, address from, address to (recieves the nft), tokenid which is passed in ass an argument above
-_artick.transferFrom(msg.sender, address(this), _tokenId);
+transferFrom(msg.sender, address(this), _tokenId);
 
     // Emit the Bought event
     emit Bought(
-        tokenId,
+        TicketId,
         address(ticket.nft),
         ticket.tokenId,
         ticket.price,
@@ -256,9 +256,9 @@ _artick.transferFrom(msg.sender, address(this), _tokenId);
 
 
 // ----- Create tickets ----//
-//This function will create a ticket for the ticket struct
+//This function will create a ticket for the ticket struct. We need a mint function for the creation of the nft's and a make ticket for our own app/ecosystem.
 //All the parameters relate to the Ticket struct above. The values for this should be passed in via the create component and the mintthenlist function
-function makeTicket(IERC721 _artick, uint _TicketId, uint _price, uint _tokenId, uint _occasionId, address _seller, bool _sold) external nonReentrant onlyOwner {
+function makeTicket(IERC721 _artick, uint _TicketId, uint _price, uint _tokenId, uint _occasionId, address _seller, bool _sold) external onlyOwner {
  //require price to be higher than 0, if true it runs the code, if not it emits this message
 require(_price > 0, "Price must be greater than zero");
 
@@ -266,7 +266,7 @@ require(_price > 0, "Price must be greater than zero");
 //The TicketId is incremented to ensure that each ticket gets a unique identifier.
 TicketId++;
 //This line creates a new instance of the Ticket struct and stores it in the tickets mapping, totaloccasiosn is used as the occasionID
-tickets[TicketId] = Ticket(_TicketId, IERC721(address(this)), _tokenId, false, _price, _occasionId);
+tickets[TicketId] = Ticket(_TicketId, IERC721(address(this)),_tokenId, _price, _occasionId,payable(owner), false);
 emit OfferedTicket(_TicketId, address(this), tickets[TicketId].tokenId, _price, payable(owner));
 }
 
