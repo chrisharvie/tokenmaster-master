@@ -12,6 +12,7 @@ import "./App.css";
 import Card from "./components/Card.js";
 import SeatChart from "./components/SeatChart.js";
 import About from "./components/About.js";
+import MyPurchases from "./components/MyPurchases";
 
 // ABIs
 import Artick from "./abis/Artick.json";
@@ -139,6 +140,7 @@ function App() {
                   </li>
                   <Routes>
                     <Route path="/about" component={About} />
+                    <Route path="/My Purchases" component={MyPurchases} />
                   </Routes>
                 </Router>
               </ul>
