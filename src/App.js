@@ -303,8 +303,8 @@ function App() {
                   alt="Silicon"
                 />
               </div>
-              <form className="needs-validation" novalidate>
-                <label for="subscr-email" className="form-label">
+              <form className="needs-validation" noValidate>
+                <label htmlFor="subscr-email" className="form-label">
                   Subscribe to our newsletter
                 </label>
                 <div className="input-group">
