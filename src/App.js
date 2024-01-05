@@ -1,7 +1,13 @@
+//Import React imports
 import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
+//Importing ethers library
 import { ethers } from "ethers";
 
+//Importing css
 import "./App.css";
+
 // Components
 import Card from "./components/Card.js";
 import SeatChart from "./components/SeatChart.js";
@@ -109,27 +115,32 @@ function App() {
                     />
                   </form>
                 </li>
-                <li className="nav-item" style={{ paddingLeft: "50px" }}>
-                  <a href="/Home" className="nav-link" aria-current="page">
-                    Events
-                  </a>
-                </li>
+                <Router>
+                  <li className="nav-item" style={{ paddingLeft: "50px" }}>
+                    <a href="/Home" className="nav-link" aria-current="page">
+                      Events
+                    </a>
+                  </li>
 
-                <li className="nav-item">
-                  <a href="/MyPurchases" className="nav-link">
-                    My purchases
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a href="/MyPurchases" className="nav-link">
-                    My sold tickets
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a to="/about" className="nav-link" aria-current="page">
-                    About
-                  </a>
-                </li>
+                  <li className="nav-item">
+                    <a href="/MyPurchases" className="nav-link">
+                      My purchases
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="/MyPurchases" className="nav-link">
+                      My sold tickets
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/about" className="nav-link" aria-current="page">
+                      About
+                    </Link>
+                  </li>
+                  <Routes>
+                    <Route path="/about" component={About} />
+                  </Routes>
+                </Router>
               </ul>
             </div>
 
