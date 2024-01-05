@@ -82,20 +82,28 @@ const Create = ({ artick }) => {
     }
   };
 
+  //This is a function that creates a ticket struct and mints a new ticket. The URI parameter takes the value of that set in the 'sendtojson' function above
   const mintThenList = async (uri) => {
-    // const uri = `https://ipfs.infura.io/ipfs/${result.path}`
-    // mint nft
+    // e.g.const uri = `https://ipfs.infura.io/ipfs/${result.path}`
+    //calling the makeItem function from the marketplace contract. This should create a ticket struct with a TicketId as the variable is increased and that can be used in the mint function in the contract in the require statements
+    //We can use the URI for the function as the tokenID when the nft is minted.
+    await (
+      await artick.makeTicket(
+        TicketId,
+        artick.address,
+        uri,
+        price,
+        occasionId,
+        payable(owner),
+        false
+      )
+    ).wait();
     //mint nft. mint function from nft contract
     await (await artick.mint(uri)).wait();
-    // get TicketId of new nft
-    const id = await artick.TicketId();
     // approve marketplace to spend nft
     await (await artick.setApprovalForAll(artick.address, true)).wait();
-    // add nft to marketplace this converts the wei into a string
-    const listingPrice = ethers.utils.parseEther(price.toString());
-    //calling the makeItem function from the marketplace contract
-    //all of the arguments passed in here come from the variables above or the app.js file for the nft address
-    await (await artick.makeTicket(artick.address, id, listingPrice)).wait();
+    // add nft/ticket to website, this converts the wei into a string
+    const price = ethers.utils.parseEther(price.toString());
   };
 
   const revealNFTs = async () => {
