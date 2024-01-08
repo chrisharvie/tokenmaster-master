@@ -1,6 +1,18 @@
-import "../App.css/";
+import "../App.css";
+import { Form } from "react-bootstrap";
 
-function SaleConfirmation() {
+const SaleConfirmation = ({
+  occasion,
+  toggle,
+  setToggle,
+  setOccasion,
+  setPrice,
+  sellHandler,
+}) => {
+  const togglePop = () => {
+    setOccasion(occasion);
+    toggle ? setToggle(false) : setToggle(true);
+  };
   return (
     <div>
       <div
@@ -45,6 +57,6 @@ function SaleConfirmation() {
       </div>
     </div>
   );
-}
+};
 
 export default SaleConfirmation;

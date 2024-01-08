@@ -12,8 +12,9 @@ import "./App.css";
 import Card from "./components/Card.js";
 import SeatChart from "./components/SeatChart.js";
 import About from "./components/About.js";
-import MyPurchases from "./components/MyPurchases";
-
+import MyPurchases from "./components/MyPurchases.js";
+import Create from "./components/Create.js";
+import MyListedTickets from "./components/MyListedTickets.js";
 // ABIs
 import Artick from "./abis/Artick.json";
 
@@ -37,6 +38,7 @@ function App() {
     //create connection for smart contract for javascript
     const address = config[31337].Artick.address;
     const artick = new ethers.Contract(address, Artick, provider);
+
     setArtick(artick);
 
     const totalOccasions = await artick.totalOccasions();
@@ -117,30 +119,53 @@ function App() {
                   </form>
                 </li>
                 <Router>
-                  <li className="nav-item" style={{ paddingLeft: "50px" }}>
-                    <a href="/Home" className="nav-link" aria-current="page">
-                      Events
-                    </a>
-                  </li>
-
-                  <li className="nav-item">
-                    <a href="/MyPurchases" className="nav-link">
-                      My purchases
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a href="/MyPurchases" className="nav-link">
-                      My sold tickets
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/about" className="nav-link" aria-current="page">
-                      About
-                    </Link>
-                  </li>
+                  <ul>
+                    <li className="nav-item" style={{ paddingLeft: "50px" }}>
+                      <Link
+                        to="/create"
+                        className="nav-link"
+                        aria-current="page"
+                      >
+                        Create
+                      </Link>
+                    </li>
+                    {/* <li className="nav-item">
+                      <Link to="/my-purchases" className="nav-link">
+                        My purchases
+                      </Link>
+                    </li> */}
+                    {/* <li className="nav-item">
+                      <Link to="/my-sold-tickets" className="nav-link">
+                        My sold tickets
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to="/about"
+                        className="nav-link"
+                        aria-current="page"
+                      >
+                        About
+                      </Link>
+                    </li> */}
+                  </ul>
                   <Routes>
-                    <Route path="/about" component={About} />
-                    <Route path="/My Purchases" component={MyPurchases} />
+                    {/* <Route
+                      path="/about"
+                      element={<About myProp={myProp} />} // Pass props using the 'element' prop
+                    /> */}
+                    {/* <Route
+                      path="/MyPurchases"
+                      element={<MyPurchases myProp={myProp} />} // Pass props using the 'element' prop
+                    /> */}
+                    <Route
+                      path="/create"
+                      element={<Create artick={artick} />}
+                    />
+                    {/* <Route 
+                      path="/MyListedItems"
+                      element={<MyListedTickets myProp={myProp} />} // Pass props using the 'element' prop
+                    /> */}
                   </Routes>
                 </Router>
               </ul>

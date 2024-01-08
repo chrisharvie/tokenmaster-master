@@ -5,7 +5,9 @@ import { useState } from "react";
 import { ethers } from "ethers";
 import { Row, Form, Button } from "react-bootstrap";
 
-const Create = ({ artick }) => {
+const Create = (artick) => {
+  console.log("artick", artick);
+
   //keeps track of the state of the image, price, name and description
   const [fileImg, setFile] = useState(null);
   const [name, setName] = useState("");
@@ -21,7 +23,7 @@ const Create = ({ artick }) => {
       //makes an API post call to send json to IPFS
       const resJSON = await axios({
         method: "post",
-        url: "https://api.pinata.cloud/pinning/pinJsonToIPFS",
+        url: "./https://api.pinata.cloud/pinning/pinJsonToIPFS",
         data: {
           name: name,
           description: desc,
@@ -36,7 +38,7 @@ const Create = ({ artick }) => {
       // https://gateway.pinata.cloud/ipfs/QmZ6iZAhazHyakzynC4sxZ6r6cikJmS69mZaCoyburKuq
       //this creates the token URI variable which is passed into the mint fuinction
       //points to the URI for where the metadata lives on IPFS
-      const tokenURI = `https://gateway.pinata.cloud/ipfs/${resJSON.data.IpfsHash}`;
+      const tokenURI = `./https://gateway.pinata.cloud/ipfs/${resJSON.data.IpfsHash}`;
       console.log("Token URI", tokenURI);
       //mintNFT(tokenURI, currentAccount)
       //calls the function to mint an NFT and list it on the marketplace
@@ -62,7 +64,7 @@ const Create = ({ artick }) => {
         console.log(formData);
         const resFile = await axios({
           method: "post",
-          url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+          url: "./https://api.pinata.cloud/pinning/pinFileToIPFS",
           data: formData,
           headers: {
             pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
@@ -71,7 +73,7 @@ const Create = ({ artick }) => {
           },
         });
 
-        const ImgHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`;
+        const ImgHash = `./https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`;
         console.log(ImgHash);
         //calling this function then sends the resulting JSON data to IPFS
         sendJSONtoIPFS(ImgHash);
@@ -98,6 +100,7 @@ const Create = ({ artick }) => {
         false
       )
     ).wait();
+
     //mint nft. mint function from nft contract
     await (await artick.mint(uri)).wait();
     // approve marketplace to spend nft

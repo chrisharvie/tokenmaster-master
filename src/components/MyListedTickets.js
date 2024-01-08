@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Row, Col, Card } from "react-bootstrap";
-import "../App.css/";
+import "../App.css";
 
 //This is a function that renders a list of sold tickets based on the information passed to it.
 //The tickets parameter here is meant to be the tickets mapping in the smart contract i.e the id for the ticket struct (object)

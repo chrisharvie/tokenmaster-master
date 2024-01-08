@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Row, Col, Card } from "react-bootstrap";
-import { SaleConfirmation } from "./SaleConfirmation";
-import "../App.css/";
+import SaleConfirmation from "./SaleConfirmation";
+import "../App.css";
 
 export default function MyPurchases({ artick, account }) {
   const [confirmationModal, setConfirmationModal] = useState(false);
