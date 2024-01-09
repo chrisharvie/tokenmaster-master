@@ -6,6 +6,7 @@ import "../App.css";
 //This is a function that renders a list of sold tickets based on the information passed to it.
 //The tickets parameter here is meant to be the tickets mapping in the smart contract i.e the id for the ticket struct (object)
 function renderSoldTickets(tickets) {
+  console.log("tickets", tickets);
   return (
     <>
       <h2>Sold</h2>
@@ -14,18 +15,21 @@ function renderSoldTickets(tickets) {
           <div className="cards">
             <Row xs={1} md={2} lg={4} className="g-4 py-3">
               {/*This is a map function that tries to load the sold tickets details based on the tickets mapping i.e the id passed in */}
-              {tickets.map((Ticket, idx) => (
-                <Col key={idx} className="overflow-hidden">
-                  <Card className="card">
-                    <Card.Img variant="top" src={occasion.image} />
-                    <h5 className="card-title mb-3">{occasion.name}</h5>
-                    <Card.Footer>
-                      For {ethers.utils.formatEther(Ticket.totalPrice)} ETH -
-                      Recieved {ethers.utils.formatEther(Ticket.price)} ETH
-                    </Card.Footer>
-                  </Card>
-                </Col>
-              ))}
+              {tickets.map((Ticket, idx) => {
+                console.log("Ticket", Ticket);
+                return (
+                  <Col key={idx} className="overflow-hidden">
+                    <Card className="card">
+                      {/* <Card.Img variant="top" src={occasion.image} /> */}
+                      {/* <h5 className="card-title mb-3">{occasion.name}</h5> */}
+                      <Card.Footer>
+                        For {ethers.utils.formatEther(Ticket.totalPrice)} ETH -
+                        Recieved {ethers.utils.formatEther(Ticket.price)} ETH
+                      </Card.Footer>
+                    </Card>
+                  </Col>
+                )
+              })}
             </Row>
           </div>
         </div>
@@ -94,8 +98,8 @@ export default function MyListedTickets({ artick, account }) {
                 {listedTickets.map((Ticket, idx) => (
                   <Col key={idx} className="overflow-hidden">
                     <Card className="card">
-                      <Card.Img variant="top" src={occasion.image} />
-                      <h5 className="card-title mb-3">{occasion.name}</h5>
+                      {/* <Card.Img variant="top" src={occasion.image} /> */}
+                      {/* <h5 className="card-title mb-3">{occasion.name}</h5> */}
                       <Card.Footer>
                         {ethers.utils.formatEther(Ticket.totalPrice)} ETH
                       </Card.Footer>

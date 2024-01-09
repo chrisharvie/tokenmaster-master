@@ -54,6 +54,10 @@ export default function MyPurchases({ artick, account }) {
     toggleConfirmationModal();
   };
 
+  const togglePop = () => {
+    console.log("Toggle");
+  }
+
   if (loading)
     return (
       <main style={{ padding: "1rem 0" }}>
@@ -71,7 +75,7 @@ export default function MyPurchases({ artick, account }) {
                   <Col key={idx} className="overflow-hidden">
                     <Card className="card">
                       <Card.Img variant="top" src={Ticket.image} />
-                      <h5 className="card-title mb-3">{occasion.name}</h5>
+                      {/* <h5 className="card-title mb-3">{occasion.name}</h5> */}
                       <Card.Footer>
                         {ethers.utils.formatEther(Ticket.totalPrice)} ETH
                         <button
@@ -90,7 +94,7 @@ export default function MyPurchases({ artick, account }) {
                             selectedTicket={selectedTicket}
                             onClose={toggleConfirmationModal}
                             onSellTicket={(Ticket) => {
-                              onSellTicket(Ticket);
+                              // onSellTicket(Ticket);
                               toggleConfirmationModal();
                             }}
                           />

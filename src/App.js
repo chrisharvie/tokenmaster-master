@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 //Importing ethers library
-import { ethers } from "ethers";
+import * as ethers from 'ethers';
 
 //Importing css
 import "./App.css";
@@ -31,10 +31,10 @@ function App() {
 
   const loadBlockchainData = async () => {
     //provides the blockchain connection
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = ethers.providers && new ethers.providers.Web3Provider(window.ethereum);
     setProvider(provider);
     //for changing networks instead of hardhat
-    const network = await provider.getNetwork();
+    // const network = await provider.getNetwork();
     //create connection for smart contract for javascript
     const address = config[31337].Artick.address;
     const artick = new ethers.Contract(address, Artick, provider);
@@ -162,7 +162,7 @@ function App() {
                       path="/create"
                       element={<Create artick={artick} />}
                     />
-                    {/* <Route 
+                    {/* <Route
                       path="/MyListedItems"
                       element={<MyListedTickets myProp={myProp} />} // Pass props using the 'element' prop
                     /> */}

@@ -6,8 +6,6 @@ import { ethers } from "ethers";
 import { Row, Form, Button } from "react-bootstrap";
 
 const Create = (artick) => {
-  console.log("artick", artick);
-
   //keeps track of the state of the image, price, name and description
   const [fileImg, setFile] = useState(null);
   const [name, setName] = useState("");
@@ -17,9 +15,6 @@ const Create = (artick) => {
   const [OccasionId, setOccasionId] = useState("");
   const [owner, setOwner] = useState("");
   const [payable, setPayable] = useState("");
-
-  console.log("API Key:", process.env.REACT_APP_PINATA_API_KEY);
-  console.log("API Secret Key:", process.env.REACT_APP_PINATA_SECRET_API_KEY);
 
   //creates the json file that is uploaded to IPFS when the sendfiletoIPFS function is called
   const sendJSONtoIPFS = async (ImgHash) => {
@@ -129,7 +124,7 @@ const Create = (artick) => {
         <main
           role="main"
           className="col-lg-12 mx-auto"
-          style={{ maxWidth: "1000px" }}
+          style={{ maxWidth: "2000px" }}
         >
           <div className="content mx-auto">
             <Row className="g-4">

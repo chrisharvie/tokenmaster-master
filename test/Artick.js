@@ -1,3 +1,4 @@
+import * as ethers from 'ethers';
 const { expect } = require("chai");
 
 const NAME = "Artick";
