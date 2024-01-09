@@ -158,7 +158,7 @@ tickets[totalSupply].TicketId = _TicketId;
 //This line increments the totalSupply variable by 1. The totalSupply represents the total number of NFTs (non-fungible tokens) minted in the contract
    totalSupply++;
 //This line calls the _safeMint function, which is part of the ERC721 standard. It mints a new NFT and assigns ownership to the address specified as the first argument. The second argument is typically used as the unique identifier or token ID for the newly minted NFT.   
-   _safeMint(msg.sender, _tokenId);
+   _safeMint(msg.sender, totalSupply);
 }
 
 

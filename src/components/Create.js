@@ -13,6 +13,10 @@ const Create = (artick) => {
   const [name, setName] = useState("");
   const [desc, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [TicketId, setTicketId] = useState("");
+  const [OccasionId, setOccasionId] = useState("");
+  const [owner, setOwner] = useState("");
+  const [payable, setPayable] = useState("");
 
   console.log("API Key:", process.env.REACT_APP_PINATA_API_KEY);
   console.log("API Secret Key:", process.env.REACT_APP_PINATA_SECRET_API_KEY);
@@ -23,7 +27,7 @@ const Create = (artick) => {
       //makes an API post call to send json to IPFS
       const resJSON = await axios({
         method: "post",
-        url: "./https://api.pinata.cloud/pinning/pinJsonToIPFS",
+        url: "https://api.pinata.cloud/pinning/pinJsonToIPFS",
         data: {
           name: name,
           description: desc,
@@ -38,7 +42,7 @@ const Create = (artick) => {
       // https://gateway.pinata.cloud/ipfs/QmZ6iZAhazHyakzynC4sxZ6r6cikJmS69mZaCoyburKuq
       //this creates the token URI variable which is passed into the mint fuinction
       //points to the URI for where the metadata lives on IPFS
-      const tokenURI = `./https://gateway.pinata.cloud/ipfs/${resJSON.data.IpfsHash}`;
+      const tokenURI = `https://gateway.pinata.cloud/ipfs/${resJSON.data.IpfsHash}`;
       console.log("Token URI", tokenURI);
       //mintNFT(tokenURI, currentAccount)
       //calls the function to mint an NFT and list it on the marketplace
@@ -64,7 +68,7 @@ const Create = (artick) => {
         console.log(formData);
         const resFile = await axios({
           method: "post",
-          url: "./https://api.pinata.cloud/pinning/pinFileToIPFS",
+          url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
           data: formData,
           headers: {
             pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
@@ -73,7 +77,7 @@ const Create = (artick) => {
           },
         });
 
-        const ImgHash = `./https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`;
+        const ImgHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`;
         console.log(ImgHash);
         //calling this function then sends the resulting JSON data to IPFS
         sendJSONtoIPFS(ImgHash);
@@ -95,7 +99,7 @@ const Create = (artick) => {
         artick.address,
         uri,
         price,
-        occasionId,
+        OccasionId,
         payable(owner),
         false
       )
@@ -156,6 +160,28 @@ const Create = (artick) => {
                 required
                 type="number"
                 placeholder="Price in ETH"
+              />
+              <Form.Control
+                onChange={(e) => setTicketId(e.target.value)}
+                size="lg"
+                required
+                type="number"
+                placeholder="TicketId"
+              />
+              <Form.Control
+                onChange={(e) => setOccasionId(e.target.value)}
+                size="lg"
+                required
+                type="number"
+                placeholder="OccasionId"
+              />
+
+              <Form.Control
+                onChange={(e) => setPayable(e.target.value)}
+                size="lg"
+                required
+                type="number"
+                placeholder="Owner's address"
               />
               <div className="d-grid px-0">
                 <Button onClick={sendFileToIPFS} variant="primary" size="lg">
