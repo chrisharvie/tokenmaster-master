@@ -1,6 +1,6 @@
 import "../App.css";
 import { useEffect, useState } from "react";
-import { ethers } from "ethers";
+const ethers = require("ethers");
 
 function About() {
   const [account, setAccount] = useState(null);

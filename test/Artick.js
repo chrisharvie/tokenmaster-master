@@ -1,4 +1,4 @@
-import * as ethers from 'ethers';
+const ethers = require("ethers");
 const { expect } = require("chai");
 
 const NAME = "Artick";

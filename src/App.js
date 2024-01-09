@@ -2,9 +2,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
-//Importing ethers library
-import * as ethers from 'ethers';
-
 //Importing css
 import "./App.css";
 
@@ -21,6 +18,9 @@ import Artick from "./abis/Artick.json";
 // Config
 import config from "./config.json";
 
+//Importing ethers library
+const ethers = require("ethers");
+
 function App() {
   const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
@@ -31,10 +31,10 @@ function App() {
 
   const loadBlockchainData = async () => {
     //provides the blockchain connection
-    const provider = ethers.providers && new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(provider);
     //for changing networks instead of hardhat
-    // const network = await provider.getNetwork();
+    const network = await provider.getNetwork();
     //create connection for smart contract for javascript
     const address = config[31337].Artick.address;
     const artick = new ethers.Contract(address, Artick, provider);
