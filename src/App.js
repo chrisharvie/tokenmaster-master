@@ -1,6 +1,7 @@
 //Import React imports
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
+import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 
 //Importing css
 import "./App.css";
@@ -38,13 +39,13 @@ function App() {
     //create connection for smart contract for javascript
     const address = config[31337].Artick.address;
     const artick = new ethers.Contract(address, Artick, provider);
-
     setArtick(artick);
+    const totalOccasions = await artick.totalOccasions;
 
-    const totalOccasions = await artick.totalOccasions();
     const occasions = [];
 
     for (var i = 1; i <= totalOccasions; i++) {
+      console.log("count");
       const occasion = await artick.getOccasion(i);
       occasions.push(occasion);
     }
@@ -59,9 +60,11 @@ function App() {
       setAccount(account);
     });
   };
+
   useEffect(() => {
     loadBlockchainData();
   }, []);
+
   // MetaMask Login/Connect, connects account
   const web3Handler = async () => {
     const accounts = await window.ethereum.request({
@@ -119,36 +122,18 @@ function App() {
                   </form>
                 </li>
                 <Router>
-                  <ul>
-                    <li className="nav-item" style={{ paddingLeft: "50px" }}>
-                      <Link
-                        to="/create"
-                        className="nav-link"
-                        aria-current="page"
-                      >
-                        Create
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link to="/my-purchases" className="nav-link">
-                        My purchases
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link to="/my-sold-tickets" className="nav-link">
-                        My sold tickets
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link
-                        to="/about"
-                        className="nav-link"
-                        aria-current="page"
-                      >
-                        About
-                      </Link>
-                    </li>
-                  </ul>
+                  <div className="nav-bar">
+                    <Navbar bg="dark" data-bs-theme="dark">
+                      <Container>
+                        <Nav className="me-auto">
+                          <Nav.Link href="/create">Create</Nav.Link>
+                          <Nav.Link href="/my-purchases">My purchases</Nav.Link>
+                          <Nav.Link href="/my-sold-tickets">My sold tickets</Nav.Link>
+                          <Nav.Link href="/about">About</Nav.Link>
+                        </Nav>
+                      </Container>
+                    </Navbar>
+                  </div>
                   <Routes>
                     <Route
                       path="/about"
