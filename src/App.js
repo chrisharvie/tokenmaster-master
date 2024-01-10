@@ -129,12 +129,12 @@ function App() {
                         Create
                       </Link>
                     </li>
-                    {/* <li className="nav-item">
+                    <li className="nav-item">
                       <Link to="/my-purchases" className="nav-link">
                         My purchases
                       </Link>
-                    </li> */}
-                    {/* <li className="nav-item">
+                    </li>
+                    <li className="nav-item">
                       <Link to="/my-sold-tickets" className="nav-link">
                         My sold tickets
                       </Link>
@@ -147,25 +147,25 @@ function App() {
                       >
                         About
                       </Link>
-                    </li> */}
+                    </li>
                   </ul>
                   <Routes>
-                    {/* <Route
+                    <Route
                       path="/about"
-                      element={<About myProp={myProp} />} // Pass props using the 'element' prop
-                    /> */}
-                    {/* <Route
+                      element={<About myProp={artick} />} // Pass props using the 'element' prop
+                    />
+                    <Route
                       path="/MyPurchases"
-                      element={<MyPurchases myProp={myProp} />} // Pass props using the 'element' prop
-                    /> */}
+                      element={<MyPurchases myProp={artick} />} // Pass props using the 'element' prop
+                    />
                     <Route
                       path="/create"
                       element={<Create artick={artick} />}
                     />
-                    {/* <Route
+                    <Route
                       path="/MyListedItems"
-                      element={<MyListedTickets myProp={myProp} />} // Pass props using the 'element' prop
-                    /> */}
+                      element={<MyListedTickets myProp={artick} />} // Pass props using the 'element' prop
+                    />
                   </Routes>
                 </Router>
               </ul>
