@@ -29,6 +29,7 @@ struct Ticket {
         uint occasionId; // Identifier of the occasion associated with the ticket
         address payable seller; // Address of the seller
         bool sold; // Flag indicating whether the ticket has been sold
+        string image; //Image for the ticket
     }
 
 //---Ticket mapping---//    
@@ -115,7 +116,7 @@ function listOccasion (uint _id, string memory _name, uint _cost, uint _tickets,
 // ----- Create tickets ----//
 //This function will create a ticket for the ticket struct. We need a mint function for the creation of the nft's on the blockchain and a 'make ticket' for our own app/ecosystem.
 //All the parameters relate to the Ticket struct above. The values for this should be passed in via the create component and the mintthenlist function
-function makeTicket(uint _TicketId,IERC721 _artick, uint _tokenId, uint _price,uint _occasionId, address _seller, bool _sold) external onlyOwner {
+function makeTicket(uint _TicketId,IERC721 _artick, uint _tokenId, uint _price,uint _occasionId, address _seller, bool _sold, string memory _image) external onlyOwner {
  //require price to be higher than 0, if true it runs the code, if not it emits this message
 require(_price > 0, "Price must be greater than zero");
 
@@ -123,7 +124,7 @@ require(_price > 0, "Price must be greater than zero");
 //The TicketId is incremented to ensure that each ticket gets a unique identifier.
 TicketId++;
 //This line creates a new instance of the Ticket struct and stores it in the tickets mapping,
-tickets[TicketId] = Ticket(_TicketId, IERC721(address(this)),_tokenId, _price, _occasionId,payable(owner), false);
+tickets[TicketId] = Ticket(_TicketId, IERC721(address(this)),_tokenId, _price, _occasionId,payable(owner), false, _image);
 emit OfferedTicket(_TicketId, address(this), tickets[TicketId].tokenId, _price, payable(owner));
 }
 

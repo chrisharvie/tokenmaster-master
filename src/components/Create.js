@@ -7,7 +7,7 @@ import { Row, Form, Button } from "react-bootstrap";
 
 const Create = (artick) => {
   //keeps track of the state of the image, price, name and description
-  const [fileImg, setFile] = useState(null);
+  const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [desc, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -54,12 +54,12 @@ const Create = (artick) => {
     console.log("123");
     console.log(e);
 
-    if (fileImg) {
+    if (image) {
       //all of this try code is uploading the image file to IPFS
       try {
         console.log("1234");
         const formData = new FormData();
-        formData.append("file", fileImg);
+        formData.append("file", image);
         console.log(formData);
         const resFile = await axios({
           method: "post",
@@ -96,7 +96,8 @@ const Create = (artick) => {
         price,
         OccasionId,
         payable(owner),
-        false
+        false,
+        image
       )
     ).wait();
 
@@ -129,7 +130,7 @@ const Create = (artick) => {
           <div className="content mx-auto">
             <Row className="g-4">
               <Form.Control
-                onChange={(e) => setFile(e.target.files[0])}
+                onChange={(e) => setImage(e.target.files[0])}
                 size="lg"
                 required
                 type="file"

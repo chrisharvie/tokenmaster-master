@@ -28,7 +28,7 @@ function renderSoldTickets(tickets) {
                       </Card.Footer>
                     </Card>
                   </Col>
-                )
+                );
               })}
             </Row>
           </div>
@@ -98,8 +98,8 @@ export default function MyListedTickets({ artick, account }) {
                 {listedTickets.map((Ticket, idx) => (
                   <Col key={idx} className="overflow-hidden">
                     <Card className="card">
-                      {/* <Card.Img variant="top" src={occasion.image} /> */}
-                      {/* <h5 className="card-title mb-3">{occasion.name}</h5> */}
+                      <Card.Img variant="top" src={Ticket.image} />
+                      <h5 className="card-title mb-3">{Ticket.name}</h5>
                       <Card.Footer>
                         {ethers.utils.formatEther(Ticket.totalPrice)} ETH
                       </Card.Footer>
