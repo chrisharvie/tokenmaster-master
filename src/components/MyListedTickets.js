@@ -42,18 +42,20 @@ export default function MyListedTickets({ artick, account }) {
   const [loading, setLoading] = useState(true);
   const [listedTickets, setListedTickets] = useState([]);
   const [soldTickets, setSoldTickets] = useState([]);
+
+  //This function is meant to retrieve information about listed and sold tickets associated with the user's account.
   const loadListedTickets = async () => {
-    // Load all sold ticket that the user listed
+    //creating a variable for a ticket's ID, we can use this later to fetch information
     const TicketId = await artick.TicketId();
+    //Initializing two arrays, listedTickets and soldTickets, to store information about listed and sold tickets, respectively
     let listedTickets = [];
     let soldTickets = [];
-    {
-      /*This for function pulls in listed tickets not yet sold */
-    }
+    //This 'for' function pulls in listed tickets not yet sold
     for (let indx = 1; indx <= TicketId; indx++) {
       const i = await artick.tickets(indx);
+      //It checks if the seller of the ticket is the same as the user's Ethereum account (account). If true, it means the user listed this ticket.
       if (i.seller.toLowerCase() === account) {
-        // get uri url from nft contract
+        // get uri from nft contract
         const uri = await artick.tokenURI(i.tokenId);
         // use uri to fetch the nft metadata stored on ipfs
         const response = await fetch(uri);
@@ -63,7 +65,6 @@ export default function MyListedTickets({ artick, account }) {
         // define listed ticket object
         let Ticket = {
           totalPrice,
-          price: i.price,
           TicketId: i.TicketId,
           name: metadata.name,
           description: metadata.description,

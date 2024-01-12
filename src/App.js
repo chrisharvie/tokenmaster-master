@@ -1,7 +1,12 @@
 //Import React imports
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  NavLink,
+} from "react-router-dom";
+import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 
 //Importing css
 import "./App.css";
@@ -40,7 +45,7 @@ function App() {
     const address = config[31337].Artick.address;
     const artick = new ethers.Contract(address, Artick, provider);
     setArtick(artick);
-    const totalOccasions = await artick.totalOccasions;
+    const totalOccasions = await artick.totalOccasions();
 
     const occasions = [];
 
@@ -86,6 +91,7 @@ function App() {
       await web3Handler();
     });
   };
+
   return (
     <div className="App">
       <header className="header navbar navbar-expand-lg navbar-dark position-absolute">
@@ -117,18 +123,23 @@ function App() {
                       type="search"
                       placeholder="Search for events..."
                       aria-label="Search"
-                      style={{ width: "240px" }}
+                      style={{ width: "240px", marginTop: "20px" }}
                     />
                   </form>
                 </li>
                 <Router>
                   <div className="nav-bar">
-                    <Navbar bg="dark" data-bs-theme="dark">
+                    <Navbar data-bs-theme="dark">
                       <Container>
-                        <Nav className="me-auto">
+                        <Nav
+                          className="me-auto"
+                          style={{ paddingLeft: "40px" }}
+                        >
                           <Nav.Link href="/create">Create</Nav.Link>
                           <Nav.Link href="/my-purchases">My purchases</Nav.Link>
-                          <Nav.Link href="/my-sold-tickets">My sold tickets</Nav.Link>
+                          <Nav.Link href="/my-sold-tickets">
+                            My sold tickets
+                          </Nav.Link>
                           <Nav.Link href="/about">About</Nav.Link>
                         </Nav>
                       </Container>

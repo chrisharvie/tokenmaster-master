@@ -1,9 +1,17 @@
+//Import react
 import { useState, useEffect } from "react";
-import { ethers } from "ethers";
 import { Row, Col, Card } from "react-bootstrap";
+
+//import ethers
+import { ethers } from "ethers";
+
+//import components
 import SaleConfirmation from "./SaleConfirmation";
+
+//import css styling
 import "../App.css";
 
+//Designed to display a user's purchased tickets and includes functionality to trigger a modal for selling a ticket
 export default function MyPurchases({ artick, account }) {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -28,7 +36,6 @@ export default function MyPurchases({ artick, account }) {
         // define listed item object
         let purchasedTicket = {
           totalPrice,
-          price: i.price,
           TicketId: i.TicketId,
           name: metadata.name,
           description: metadata.description,

@@ -1,12 +1,12 @@
-//"Create" component interacts with the NFT contract to mint a new NFT and the Marketplace contract to list the newly created NFT for sale.
-//The mintThenList function mints a new NFT and lists it on the marketplace. This function interacts with both the NFT and Marketplace contracts.
 import axios from "axios";
 import { useState } from "react";
 import { ethers } from "ethers";
 import { Row, Form, Button } from "react-bootstrap";
+import "../App.css";
 
+//"Create" component interacts with the NFT contract to mint a new NFT and the Marketplace contract to list the newly created NFT for sale.
 const Create = (artick) => {
-  //keeps track of the state of the image, price, name and description
+  //keeps track of the state of all the tickets arguments
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [desc, setDescription] = useState("");
@@ -23,10 +23,15 @@ const Create = (artick) => {
       const resJSON = await axios({
         method: "post",
         url: "https://api.pinata.cloud/pinning/pinJsonToIPFS",
+        //All these fields correspond to fields in the ticket struct and are passed in below in the mint then list function
         data: {
           name: name,
           description: desc,
+          price: price,
           image: ImgHash,
+          TicketId: TicketId,
+          OccasionId: OccasionId,
+          owner: payable,
         },
         headers: {
           pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
@@ -34,7 +39,6 @@ const Create = (artick) => {
         },
       });
 
-      // https://gateway.pinata.cloud/ipfs/QmZ6iZAhazHyakzynC4sxZ6r6cikJmS69mZaCoyburKuq
       //this creates the token URI variable which is passed into the mint fuinction
       //points to the URI for where the metadata lives on IPFS
       const tokenURI = `https://gateway.pinata.cloud/ipfs/${resJSON.data.IpfsHash}`;
@@ -88,6 +92,10 @@ const Create = (artick) => {
     // e.g.const uri = `https://ipfs.infura.io/ipfs/${result.path}`
     //calling the makeItem function from the marketplace contract. This should create a ticket struct with a TicketId as the variable is increased and that can be used in the mint function in the contract in the require statements
     //We can use the URI for the function as the tokenID when the nft is minted.
+
+    // this converts the wei into a string
+    const price = ethers.utils.parseEther(price.toString());
+
     await (
       await artick.makeTicket(
         TicketId,
@@ -105,8 +113,6 @@ const Create = (artick) => {
     await (await artick.mint(uri)).wait();
     // approve marketplace to spend nft
     await (await artick.setApprovalForAll(artick.address, true)).wait();
-    // add nft/ticket to website, this converts the wei into a string
-    const price = ethers.utils.parseEther(price.toString());
   };
 
   const revealNFTs = async () => {
@@ -176,7 +182,7 @@ const Create = (artick) => {
                 onChange={(e) => setPayable(e.target.value)}
                 size="lg"
                 required
-                type="number"
+                type="text"
                 placeholder="Owner's address"
               />
               <div className="d-grid px-0">

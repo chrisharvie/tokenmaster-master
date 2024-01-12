@@ -40,13 +40,13 @@ const Card = ({ occasion, toggle, setToggle, setOccasion }) => {
         ) : (
           <button
             type="button"
-            class="btn btn-primary"
+            className="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
             onClick={() => togglePop()}
           >
             {" "}
-            View Seats
+            View Tickets
           </button>
         )}
       </div>
