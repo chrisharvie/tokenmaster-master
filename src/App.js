@@ -1,7 +1,6 @@
 //Import React imports
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 //Importing css
 import "./App.css";
@@ -94,6 +93,7 @@ function App() {
       <div className="App">
         <Navigation web3Handler={web3Handler} account={account} />
         <Routes>
+          <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />}></Route>
           <Route path="/create" element={<Create />}></Route>
           <Route path="/my-purchases" element={<MyPurchases />}></Route>
@@ -104,7 +104,6 @@ function App() {
           <Route path="/about" element={<About />}></Route>
         </Routes>
       </div>
-      <Home artick={artick} />
     </BrowserRouter>
   );
 }
