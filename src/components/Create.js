@@ -158,7 +158,10 @@ const Create = (artick) => {
         style={{ maxWidth: "1500px" }}
       >
         <div className="row">
-          <div className="content mx-auto" style={{ marginTop: "250px" }}>
+          <div
+            className="content mx-auto"
+            style={{ marginTop: "200px", maxWidth: "1000px" }}
+          >
             <Row className="g-4">
               <Form.Control
                 onChange={(e) => setImage(e.target.files[0])}
