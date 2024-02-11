@@ -31,7 +31,6 @@ function App() {
   const [occasions, setOccasions] = useState([]);
   const [toggle, setToggle] = useState(false);
   const [occasion, setOccasion] = useState({});
-  const [loading, setLoading] = useState(true);
 
   const loadBlockchainData = async () => {
     //provides the blockchain connection
@@ -65,12 +64,7 @@ function App() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await loadBlockchainData();
-      setLoading(false); // Set loading to false after data is loaded
-    };
-
-    fetchData();
+    loadBlockchainData();
   }, []);
 
   // MetaMask Login/Connect, connects account
@@ -99,7 +93,6 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Navigation web3Handler={web3Handler} account={account} />
-        {!loading && <Home />}
         <Routes>
           <Route path="/home" element={<Home />}></Route>
           <Route path="/create" element={<Create />}></Route>
@@ -111,6 +104,7 @@ function App() {
           <Route path="/about" element={<About />}></Route>
         </Routes>
       </div>
+      <Home artick={artick} />
     </BrowserRouter>
   );
 }
