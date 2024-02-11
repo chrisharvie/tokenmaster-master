@@ -35,7 +35,7 @@ function Home() {
     const address = config[31337].Artick.address;
     const artick = new ethers.Contract(address, Artick, provider);
     setArtick(artick);
-    const totalOccasions = await artick.totalOccasions;
+    const totalOccasions = await artick.totalOccasions();
 
     const occasions = [];
 
@@ -59,6 +59,28 @@ function Home() {
   useEffect(() => {
     loadBlockchainData();
   }, []);
+
+  // MetaMask Login/Connect, connects account
+  const web3Handler = async () => {
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    //sets the variable to the account which is then used in the Navbar
+    setAccount(accounts[0]);
+    // Get provider from Metamask
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // Set signer
+    const signer = provider.getSigner();
+
+    window.ethereum.on("chainChanged", (chainId) => {
+      window.location.reload();
+    });
+
+    window.ethereum.on("accountsChanged", async function (accounts) {
+      setAccount(accounts[0]);
+      await web3Handler();
+    });
+  };
 
   return (
     <div className="App">

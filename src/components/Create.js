@@ -2,7 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { ethers } from "ethers";
 import { Row, Form, Button } from "react-bootstrap";
-import "../App.css";
+
+import Navigation from "./Navigation";
 
 //"Create" component interacts with the NFT contract to mint a new NFT and the Marketplace contract to list the newly created NFT for sale.
 const Create = (artick) => {
@@ -15,6 +16,30 @@ const Create = (artick) => {
   const [OccasionId, setOccasionId] = useState("");
   const [owner, setOwner] = useState("");
   const [payable, setPayable] = useState("");
+  const [provider, setProvider] = useState(null);
+  const [account, setAccount] = useState(null);
+
+  // MetaMask Login/Connect, connects account
+  const web3Handler = async () => {
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    //sets the variable to the account which is then used in the Navbar
+    setAccount(accounts[0]);
+    // Get provider from Metamask
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // Set signer
+    const signer = provider.getSigner();
+
+    window.ethereum.on("chainChanged", (chainId) => {
+      window.location.reload();
+    });
+
+    window.ethereum.on("accountsChanged", async function (accounts) {
+      setAccount(accounts[0]);
+      await web3Handler();
+    });
+  };
 
   //creates the json file that is uploaded to IPFS when the sendfiletoIPFS function is called
   const sendJSONtoIPFS = async (ImgHash) => {
@@ -126,14 +151,15 @@ const Create = (artick) => {
   };
 
   return (
-    <div className="container-fluid mt-5">
-      <div className="row">
-        <main
-          role="main"
-          className="col-lg-12 mx-auto"
-          style={{ maxWidth: "2000px" }}
-        >
-          <div className="content mx-auto">
+    <div>
+      <Navigation web3Handler={web3Handler} account={account} />
+      <main
+        role="main"
+        className="col-lg-12 mx-auto bg-dark bg-size-cover bg-repeat-0 bg-position-center position-relative overflow-hidden py-5 mb-4"
+        style={{ maxWidth: "2000px" }}
+      >
+        <div className="row">
+          <div className="content mx-auto" style={{ marginTop: "250px" }}>
             <Row className="g-4">
               <Form.Control
                 onChange={(e) => setImage(e.target.files[0])}
@@ -192,8 +218,8 @@ const Create = (artick) => {
               </div>
             </Row>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

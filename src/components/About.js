@@ -29,115 +29,6 @@ function About() {
 
   return (
     <div>
-      <header className="header navbar navbar-expand-lg navbar-dark position-absolute">
-        <div className="container px-3">
-          <a href="index.html" className="navbar-brand pe-3">
-            <img
-              src="assets/img/Transparent Logo.png"
-              width="110"
-              alt="Artick"
-            />
-          </a>
-          <div id="navbarNav" className="offcanvas offcanvas-end bg-dark">
-            <div className="offcanvas-header border-bottom border-light">
-              <h5 className="offcanvas-title text-white">Menu</h5>
-              <button
-                type="button"
-                className="btn-close btn-close-white"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="offcanvas-body">
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                  <form className="d-flex" style={{ paddingLeft: "40px" }}>
-                    <input
-                      className="form-control me-2 pl-2"
-                      type="search"
-                      placeholder="Search for events..."
-                      aria-label="Search"
-                      style={{ width: "240px" }}
-                    />
-                  </form>
-                </li>
-                <li className="nav-item" style={{ paddingLeft: "150px" }}>
-                  <a to="/Home" className="nav-link" aria-current="page">
-                    Music
-                  </a>
-                </li>
-
-                <li className="nav-item">
-                  <a to="/Home" className="nav-link">
-                    Sport
-                  </a>
-                </li>
-
-                <li className="nav-item">
-                  <a to="/Home" className="nav-link">
-                    Comedy
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a href="index.html" className="nav-link" aria-current="page">
-                    About
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div className="offcanvas-header border-top border-light">
-              {account ? (
-                <a
-                  href={`https://etherscan.io/address/${account}`}
-                  className="btn btn-primary w-100"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <i className="bx bx-cart fs-4 lh-1 me-1"></i>
-                  &nbsp; {account.slice(0, 5) + "..." + account.slice(38, 42)}
-                </a>
-              ) : (
-                <a>
-                  <i
-                    className="bx bx-cart fs-4 lh-1 me-1"
-                    onClick={web3Handler}
-                  ></i>
-                  &nbsp; Connect Wallet
-                </a>
-              )}
-            </div>
-          </div>
-
-          <button
-            type="button"
-            className="navbar-toggler"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          {account ? (
-            <a
-              href={`https://etherscan.io/address/${account}`}
-              className="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex"
-              target="_blank"
-              rel="noopener"
-            >
-              <i className="bx bx-cart fs-5 lh-1 me-1"></i>
-              &nbsp; {account.slice(0, 5) + "..." + account.slice(38, 42)}
-            </a>
-          ) : (
-            <i className="bx bx-cart fs-5 lh-1 me-1" onClick={web3Handler}>
-              &nbsp; Connect Wallet
-            </i>
-          )}
-        </div>
-      </header>
-
       <section
         className="position-relative bg-dark pt-lg-4 pt-xl-5"
         style={{
@@ -172,8 +63,8 @@ function About() {
             </div>
           </div>
         </div>
-        <div className="d-none d-lg-block" style={{ height: "480px" }}></div>
-        <div className="d-lg-none" style={{ height: "400px" }}></div>
+        <div className="d-lg-block" style={{ height: "480px" }}></div>
+
         <div
           className="d-flex position-absolute bottom-0 start-0 w-100 overflow-hidden mb-n1"
           style={{ color: "var(--si-body-bg)" }}
@@ -201,10 +92,10 @@ function About() {
       {/*this is the main content for this page */}
       <section className="container position-relative zindex-3">
         <div
-          className="d-none d-lg-block"
+          className="dclassName d-lg-block"
           style={{ marginTop: "-428px" }}
         ></div>
-        <div className=" d-lg-none" style={{ marginTop: "-370px" }}></div>
+        <div className=" d-lgclassName" style={{ marginTop: "-370px" }}></div>
         <div
           className="swiper"
           data-swiper-options='{
@@ -226,7 +117,10 @@ function About() {
         >
           <div className="swiper-wrapper">
             {/*Item*/}
-            <div className="swiper-slide" style={{ height: "350px" }}>
+            <div
+              className="swiper-slide"
+              style={{ height: "350px", width: "400px" }}
+            >
               <a
                 href="#"
                 className="card-portfolio position-relative d-block rounded-3 overflow-hidden"
@@ -240,10 +134,12 @@ function About() {
                 ></span>
                 <div className="position-absolute bottom-0 w-100 zindex-2 p-4">
                   <div className="px-md-3">
-                    <h3 className="h4 text-white mb-0">Crypto payments</h3>
+                    <h3 className="h4 text-white mb-0">
+                      Fiat currency payments
+                    </h3>
                     <div className="card-portfolio-meta d-flex align-items-center justify-content-between">
                       <span className="text-white fs-xs text-truncate opacity-70 pe-3">
-                        Pay without having to share your bank details
+                        Pay using your regular bank cards
                       </span>
                     </div>
                   </div>
@@ -259,7 +155,10 @@ function About() {
             </div>
 
             {/*Item*/}
-            <div className="swiper-slide" style={{ height: "350px" }}>
+            <div
+              className="swiper-slide"
+              style={{ height: "350px", width: "400px" }}
+            >
               <a
                 href="#"
                 className="card-portfolio position-relative d-block rounded-3 overflow-hidden"
@@ -285,14 +184,17 @@ function About() {
                   <img
                     src="/assets/img/qr-code.jpg"
                     alt="Transportation"
-                    style={{ height: "350px" }}
+                    style={{ height: "350px", width: "365px" }}
                   />
                 </div>
               </a>
             </div>
 
             {/*Item*/}
-            <div className="swiper-slide" style={{ height: "350px" }}>
+            <div
+              className="swiper-slide"
+              style={{ height: "350px", width: "400px" }}
+            >
               <a
                 href="#"
                 className="card-portfolio position-relative d-block rounded-3 overflow-hidden"
@@ -329,6 +231,138 @@ function About() {
           <div className="swiper-pagination position-relative bottom-0 pt-2 pt-md-3 mt-4"></div>
         </div>
       </section>
+      <div
+        style={{
+          backgroundImage: "url(assets/img/landing/saas-3/hero/hero-bg.jpg)",
+        }}
+      >
+        <section className="container text-center py-2">
+          <h1
+            className="display-4"
+            style={{ fontSize: "3rem", color: "white", marginTop: "100px" }}
+          >
+            The benefits of our platform
+          </h1>
+        </section>
+
+        {/*Main features (Slider on narrow screens)*/}
+        <section className="container pt-1 pb-xl-5">
+          <div
+            className="swiper mt-n3 mt-md-0 pt-md-3 pt-lg-4 mx-n2"
+            data-swiper-options='{
+          "slidesPerView": 1,
+          "spaceBetween": 8,
+          "pagination": {
+            "el": ".swiper-pagination",
+            "clickable": true
+          },
+          "navigation": {
+            "prevEl": "#prev-news",
+            "nextEl": "#next-news"
+          },
+          "breakpoints": {
+            "500": {
+              "slidesPerView": 2
+            },
+            "700": {
+              "slidesPerView": 3
+            },
+            "1000": {
+              "slidesPerView": 4
+            }
+          }
+        }'
+          >
+            <div className="swiper-wrapper">
+              {/* Item */}
+              <div className="swiper-slide h-auto pb-3">
+                <div
+                  className=" d-block card card-hover bg-light border-0 animation-on-hover h-100 mx-2"
+                  style={{ width: "300px" }}
+                >
+                  <lottie-player
+                    className="d-block d-dark-mode-block mx-auto mt-4 mb-2"
+                    src="assets/json/animation-feature-1-dark.json"
+                    background="transparent"
+                    speed="1.25"
+                    loop={true}
+                  ></lottie-player>
+                  <div className="card-body fs-lg fw-semibold text-center">
+                    Highly transparent transactions
+                  </div>
+                </div>
+              </div>
+
+              {/* Item */}
+              <div className="swiper-slide h-auto pb-3">
+                <div
+                  className=" d-block card card-hover bg-light border-0 animation-on-hover h-100 mx-2"
+                  style={{ width: "300px" }}
+                >
+                  <lottie-player
+                    className="d-block d-dark-modeclassName mx-auto mt-4 mb-2"
+                    src="assets/json/animation-feature-2-dark.json"
+                    background="transparent"
+                    speed="1.25"
+                    loop={true}
+                  ></lottie-player>
+
+                  <div className="card-body fs-lg fw-semibold text-center">
+                    Lower 'admin' fee's to middle men
+                  </div>
+                </div>
+              </div>
+
+              {/* Item */}
+              <div className="swiper-slide h-auto pb-3">
+                <div className=" d-block card card-hover bg-light border-0 animation-on-hover h-100 mx-2">
+                  <lottie-player
+                    className="d-block d-dark-modeclassName mx-auto mt-4 mb-2"
+                    src="assets/json/animation-feature-3-light.json"
+                    background="transparent"
+                    speed="1.25"
+                    loop={true}
+                    style={{ width: "180px" }}
+                  ></lottie-player>
+
+                  <div className="card-body fs-lg fw-semibold text-center">
+                    Innovative technology
+                  </div>
+                </div>
+              </div>
+
+              {/* Item */}
+              <div className="swiper-slide h-auto pb-3">
+                <div className="d-block card card-hover bg-light border-0 animation-on-hover h-100 mx-2">
+                  <lottie-player
+                    className="d-dark-modeclassName mx-auto mt-4 mb-2"
+                    src="assets/json/animation-feature-4-light.json"
+                    background="transparent"
+                    speed="1.25"
+                    loop={true}
+                    style={{ width: "180px" }}
+                  ></lottie-player>
+                  <lottie-player
+                    className="d-block d-dark-mode-block mx-auto mt-4 mb-2"
+                    src="assets/json/animation-feature-4-dark.json"
+                    background="transparent"
+                    speed="1.25"
+                    loop={true}
+                    style={{ width: "180px" }}
+                  ></lottie-player>
+                  <div className="card-body fs-lg fw-semibold text-center">
+                    More control of your events and experiences
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Pagination (bullets) */}
+            <div className="swiper-pagination position-relative bottom-0 mt-2"></div>
+          </div>
+        </section>
+      </div>
+
       <footer className="footer pt-4 pb-4 pb-lg-5">
         <div className="container pt-lg-4">
           <div className="row pb-5">
@@ -340,15 +374,15 @@ function About() {
                   alt="Silicon"
                 />
               </div>
-              <form className="needs-validation" novalidate>
-                <label for="subscr-email" class="form-label">
+              <form className="needs-validation" noValidate>
+                <label htmlFor="subscr-email" className="form-label">
                   Subscribe to our newsletter
                 </label>
                 <div className="input-group">
                   <input
                     type="email"
                     id="subscr-email"
-                    class="form-control rounded-start ps-5"
+                    className="form-control rounded-start ps-5"
                     placeholder="Your email"
                     required
                   />
@@ -356,7 +390,7 @@ function About() {
                   <div className="invalid-tooltip position-absolute top-100 start-0">
                     Please provide a valid email address.
                   </div>
-                  <button type="submit" class="btn btn-primary">
+                  <button type="submit" className="btn btn-primary">
                     Subscribe
                   </button>
                 </div>
@@ -368,7 +402,7 @@ function About() {
                   <h6 className="mb-2">
                     <a
                       href="#useful-links"
-                      className="d-block text-dark dropdown-toggle d-lg-none py-2"
+                      className="d-block text-dark dropdown-toggle d-lgclassName py-2"
                       data-bs-toggle="collapse"
                     >
                       Useful Links
@@ -429,7 +463,7 @@ function About() {
                   <h6 className="mb-2">
                     <a
                       href="#social-links"
-                      className="d-block text-dark dropdown-toggle d-lg-none py-2"
+                      className="d-block text-dark dropdown-toggle d-lgclassName py-2"
                       data-bs-toggle="collapse"
                     >
                       Socials
