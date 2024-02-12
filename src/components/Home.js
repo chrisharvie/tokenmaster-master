@@ -40,7 +40,7 @@ function Home() {
     const occasions = [];
 
     for (var i = 1; i <= totalOccasions; i++) {
-      console.log("count");
+      
       const occasion = await artick.getOccasion(i);
       occasions.push(occasion);
     }

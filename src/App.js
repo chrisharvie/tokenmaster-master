@@ -1,3 +1,5 @@
+import { createCheckoutWithCardElement } from "@thirdweb-dev/payments";
+
 //Import React imports
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -46,7 +48,6 @@ function App() {
     const occasions = [];
 
     for (var i = 1; i <= totalOccasions; i++) {
-      console.log("count");
       const occasion = await artick.getOccasion(i);
       occasions.push(occasion);
     }
@@ -87,6 +88,32 @@ function App() {
       await web3Handler();
     });
   };
+
+  const options = {
+    colorBackground: "#fefae0",
+    colorPrimary: "#606c38",
+    colorText: "#283618",
+    borderRadius: 6,
+    inputBackgroundColor: "#faedcd",
+    inputBorderColor: "#d4a373",
+  };
+
+  createCheckoutWithCardElement({
+    clientId: "YOUR_CLIENT_ID",
+    configs: {
+      contractId: "YOUR_CONTRACT_ID",
+      walletAddress: "0x...",
+    },
+    elementOrId: "paper-checkout-container",
+    appName: "My Web3 App",
+    options,
+    onError(error) {
+      console.error("Payment error:", error);
+    },
+    onPaymentSuccess({ id }) {
+      console.log("Payment successful.");
+    },
+  });
 
   return (
     <BrowserRouter>
