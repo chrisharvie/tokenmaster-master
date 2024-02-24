@@ -73,7 +73,7 @@ async function main() {
     },
     {
       id: 5,
-      name: "ETH Global Toronto",
+      name: "ETH Global Toronto 1",
       cost: tokens(1.5 + feePercent),
       tickets: 125,
       maxtickets: 125,
@@ -86,7 +86,7 @@ async function main() {
     },
     {
       id: 6,
-      name: "Articks last event",
+      name: "Articks last events",
       cost: tokens(1 + feePercent),
       tickets: 100,
       maxtickets: 100,
